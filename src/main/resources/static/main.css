@@ -1,0 +1,16 @@
+body {
+    position: absolute;
+    transform: translate(50%,50%);
+    right: 50%;
+    bottom: 50%;
+}
+
+h1 {
+    font-family: 'Fredericka the Great', cursive;
+    font-size: 72px;
+    white-space: nowrap;
+}
+
+h1 span {
+    color: red;
+}
