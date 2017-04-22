@@ -4,14 +4,11 @@ import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.subject.SubjectSpek
-import org.junit.platform.runner.JUnitPlatform
-import org.junit.runner.RunWith
 import org.springframework.http.MediaType.TEXT_EVENT_STREAM
 import org.springframework.http.MediaType.TEXT_HTML
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.test.StepVerifier
 
-@RunWith(JUnitPlatform::class)
 object OhmypwdTests: SubjectSpek<WebTestClient>({
 
     subject { WebTestClient.bindToRouterFunction(routes).build() }
