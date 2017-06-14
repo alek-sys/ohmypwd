@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		kotlinVersion = "1.1.1"
+		kotlinVersion = "1.1.2"
 		springBootVersion = "2.0.0.BUILD-SNAPSHOT"
 	}
 	repositories {
@@ -12,7 +12,7 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
 		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
-		classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0-M3")
+		classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4")
 	}
 }
 
@@ -55,14 +55,9 @@ dependencies {
 	compile("org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.3")
 
 	testCompile("org.springframework.boot:spring-boot-starter-test")
-	testCompile("io.projectreactor.addons:reactor-test")
+	testCompile("io.projectreactor:reactor-test")
 	testCompile("org.jetbrains.spek:spek-subject-extension:1.1.0")
-    testCompile("org.junit.platform:junit-platform-console:1.0.0-M3")
-    testCompile ("org.jetbrains.spek:spek-api:1.1.0") {
-        exclude group: "org.jetbrains.kotlin"
-    }
-    testRuntime ("org.jetbrains.spek:spek-junit-platform-engine:1.1.0") {
-        exclude group: "org.junit.platform"
-        exclude group: "org.jetbrains.kotlin"
-    }
+    testCompile("org.jetbrains.spek:spek-api:1.1.2")
+    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:1.1.2")
+	testRuntime("org.junit.platform:junit-platform-launcher:1.0.0-M4")
 }

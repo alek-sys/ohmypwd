@@ -6,7 +6,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType.TEXT_EVENT_STREAM
 import org.springframework.http.MediaType.TEXT_HTML
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.reactive.function.fromPublisher
+import org.springframework.web.reactive.function.bodyFromPublisher
 import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.router
@@ -64,7 +64,7 @@ val routes = router {
     })
 
     path("/api").nest {
-        GET("/password", { ok().contentType(TEXT_EVENT_STREAM).body(fromPublisher(getPasswordsStream())) })
+        GET("/password", { ok().contentType(TEXT_EVENT_STREAM).body(bodyFromPublisher(getPasswordsStream())) })
     }
 
     resources("/**", ClassPathResource("static/"))
