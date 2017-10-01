@@ -1,8 +1,8 @@
 body {
-    position: absolute;
-    transform: translate(50%,50%);
-    right: 50%;
-    bottom: 50%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
 }
 
 h1 {
