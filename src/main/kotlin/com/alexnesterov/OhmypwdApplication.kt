@@ -6,8 +6,9 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType.TEXT_EVENT_STREAM
 import org.springframework.http.MediaType.TEXT_HTML
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
-import org.springframework.web.reactive.function.bodyFromPublisher
+import org.springframework.web.reactive.function.BodyInserters.fromPublisher
 import org.springframework.web.reactive.function.server.RouterFunctions
+import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.router
 import reactor.core.publisher.Flux
@@ -21,8 +22,8 @@ data class Password(val first: String, val nums: String, val second: String) {
 }
 
 object PasswordGenerator {
-    val lines = ClassPathResource("words").inputStream.bufferedReader().readLines()
-    val random = Random(OffsetDateTime.now().toEpochSecond())
+    private val lines = ClassPathResource("words").inputStream.bufferedReader().readLines()
+    private val random = Random(OffsetDateTime.now().toEpochSecond())
 
     fun generate() = Password(lines.random(), randomNum(2), lines.random())
 
@@ -48,12 +49,11 @@ fun indexPage(pwd: Password) = buildString {
     }
 }
 
-fun render(template: () -> String) = ok().contentType(TEXT_HTML).body(Mono.just(template()), String::class.java)
+fun render(template: () -> String): Mono<ServerResponse>
+    = ok().contentType(TEXT_HTML).body(Mono.just(template()), String::class.java)
 
-fun getPasswordsStream(): Flux<String> {
-    return Flux.generate {
-        it.next(PasswordGenerator.generate().toString())
-    }
+fun getPasswordsStream(): Flux<String> = Flux.generate {
+    it.next(PasswordGenerator.generate().toString())
 }
 
 val routes = router {
@@ -64,7 +64,11 @@ val routes = router {
     })
 
     path("/api").nest {
-        GET("/password", { ok().contentType(TEXT_EVENT_STREAM).body(bodyFromPublisher(getPasswordsStream())) })
+        GET("/password", {
+            ok()
+                .contentType(TEXT_EVENT_STREAM)
+                .body(fromPublisher(getPasswordsStream(), String::class.java))
+        })
     }
 
     resources("/**", ClassPathResource("static/"))
