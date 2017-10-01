@@ -9,7 +9,7 @@ Avaibale here http://ohmypwd.alexnesterov.com
 - Spring 5 Functional
 - Reactive Netty as a server
 - Kotlin as a language
-- Spek + JUnit4 as a test framework
+- Spek + JUnit 5 as a test framework
 - Kotlin HTML DSL for view rendering
 
 This is a simple pet project work to play with experimental or bleeding-edge technologies from Spring / Kotlin world.
