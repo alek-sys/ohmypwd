@@ -22,10 +22,11 @@ data class Password(val first: String, val nums: String, val second: String) {
 }
 
 object PasswordGenerator {
-    private val lines = ClassPathResource("words").inputStream.bufferedReader().readLines()
+    private val shortWords = ClassPathResource("short").inputStream.bufferedReader().readLines()
+    private val longWords = ClassPathResource("long").inputStream.bufferedReader().readLines()
     private val random = Random(OffsetDateTime.now().toEpochSecond())
 
-    fun generate() = Password(lines.random(), randomNum(2), lines.random())
+    fun generate() = Password(shortWords.random(), randomNum(2), longWords.random())
 
     private fun randomNum(total: Int) = (1..total).fold("", { acc, _ -> acc + random.nextInt(9) })
 
