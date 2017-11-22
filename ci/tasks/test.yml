@@ -1,0 +1,18 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: openjdk
+    tag: "8"
+
+inputs:
+  - name: ohmypwd
+
+run:
+  path: ./gradlew
+  dir: ohmypwd
+  args:
+  - test
+

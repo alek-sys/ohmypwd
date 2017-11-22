@@ -1,0 +1,15 @@
+---
+resources:
+  - name: ohmypwd
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/alek-sys/ohmypwd
+
+jobs:
+  - name: test
+    plan:
+      - get: ohmypwd
+        trigger: true
+      - task: test
+        file: ohmypwd/ci/tasks/test.yml
