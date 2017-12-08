@@ -6,12 +6,12 @@ image_resource:
     tag: "8"
 inputs:
   - name: sources
+    path: ohmypwd
 outputs:
   - name: build
 caches:
-  - path: ~/.gradle/
-  - path: ~/.m2/
+  - path: .gradle/
 run:
   path: sh
   args:
-  - sources/ci/tasks/build.sh
+  - ohmypwd/ci/tasks/build.sh
