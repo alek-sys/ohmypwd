@@ -9,5 +9,5 @@ cd ohmypwd/
 
 ./gradlew build
 
-cp ./build/libs/ohmypwd.jar build/
-cp ./ci/tasks/Dockerfile build/
+cp ./build/libs/ohmypwd.jar ../build/
+cp ./ci/tasks/Dockerfile ../build/
