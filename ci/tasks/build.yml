@@ -1,0 +1,17 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: aleksys/spring-kotlin-build
+    tag: "latest"
+inputs:
+  - name: sources
+    path: ohmypwd
+outputs:
+  - name: build
+caches:
+  - path: .gradle/
+run:
+  path: sh
+  args:
+  - ohmypwd/ci/tasks/build.sh
