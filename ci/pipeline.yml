@@ -19,7 +19,7 @@ jobs:
     plan:
       - get: sources
         trigger: true
-      - task: test
+      - task: build
         file: ci/tasks/build.yml
       - put: docker
         params:
