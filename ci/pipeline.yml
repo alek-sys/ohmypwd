@@ -1,15 +1,26 @@
 ---
 resources:
-  - name: ohmypwd
+  - name: sources
     type: git
     source:
-      branch: master
+      branch: ci
       uri: https://github.com/alek-sys/ohmypwd
 
+  - name: docker
+    type: docker-image
+    source:
+      email: {{docker-hub-email}}
+      username: {{docker-hub-username}}
+      password: {{docker-hub-password}}
+      repository: {{docker-hub-image}}
+
 jobs:
-  - name: test
+  - name: build
     plan:
-      - get: ohmypwd
+      - get: sources
         trigger: true
       - task: test
-        file: ohmypwd/ci/tasks/test.yml
+        file: ci/tasks/build.yml
+      - put: docker
+        params:
+          build: build

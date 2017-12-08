@@ -1,21 +1,15 @@
----
 platform: linux
-
 image_resource:
   type: docker-image
   source:
     repository: openjdk
     tag: "8"
-
 inputs:
-  - name: ohmypwd
-
+  - name: sources
+outputs:
+  - name: build
 caches:
-  - path: ~/.gradle/caches/modules-2/
-
+  - path: ~/.gradle/
+  - path: ~/.m2/
 run:
-  path: ./gradlew
-  dir: ohmypwd
-  args:
-  - test
-
+  path: ci/tasks/build.sh
