@@ -12,4 +12,6 @@ caches:
   - path: ~/.gradle/
   - path: ~/.m2/
 run:
-  path: sources/ci/tasks/build.sh
+  path: sh
+  args:
+  - sources/ci/tasks/build.sh
