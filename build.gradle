@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		kotlinVersion = "1.1.60"
-		springBootVersion = "2.0.0.M6"
+		kotlinVersion = "1.2.0"
+		springBootVersion = "2.0.0.M7"
 	}
 	repositories {
 		mavenCentral()
@@ -30,7 +30,6 @@ junitPlatform {
 	}
 }
 
-version = "0.0.1-SNAPSHOT"
 sourceCompatibility = 1.8
 compileKotlin {
 	kotlinOptions.jvmTarget = "1.8"
@@ -49,6 +48,7 @@ repositories {
 
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-webflux")
+	compile("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 	compile("org.jetbrains.kotlinx:kotlinx-html-jvm:0.6.4")
