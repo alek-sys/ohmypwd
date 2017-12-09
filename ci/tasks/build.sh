@@ -2,9 +2,6 @@
 
 set -e -u -x
 
-export ROOT_FOLDER=$(pwd)
-export GRADLE_USER_HOME="${ROOT_FOLDER}/.gradle"
-
 cd ohmypwd/
 
 ./gradlew build
