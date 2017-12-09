@@ -3,7 +3,7 @@ resources:
   - name: sources
     type: git
     source:
-      branch: ci
+      branch: master
       uri: https://github.com/alek-sys/ohmypwd
 
   - name: docker
