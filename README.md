@@ -1,8 +1,9 @@
 # ohmypwd!
 Simple password generator written in Kotlin and Spring 5
 
-## Demo
-Avaibale here http://ohmypwd.alexnesterov.com
+http://ohmypwd.alexnesterov.com
+
+![Build Status](https://ci.alexnesterov.com/api/v1/teams/main/pipelines/ohmypwd/jobs/build/badge)
 
 ## Technology stack
 - Spring 5 WebFlux
