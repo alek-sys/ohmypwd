@@ -3,13 +3,14 @@ package com.alexnesterov
 import kotlinx.html.*
 import kotlinx.html.stream.appendHTML
 import org.springframework.core.io.ClassPathResource
-import org.springframework.http.MediaType.TEXT_EVENT_STREAM
-import org.springframework.http.MediaType.TEXT_HTML
+import org.springframework.http.MediaType.*
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
+import org.springframework.web.reactive.function.BodyInserters.fromObject
 import org.springframework.web.reactive.function.BodyInserters.fromPublisher
 import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.body
 import org.springframework.web.reactive.function.server.router
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -39,19 +40,21 @@ fun indexPage(pwd: Password) = buildString {
         head {
             link("https://fonts.googleapis.com/css?family=Fredericka+the+Great", "stylesheet")
             link("main.css", "stylesheet")
+            script(src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js")
+            script(src = "main.js")
         }
         body {
             h1 {
-                + pwd.first
-                span { + pwd.nums }
-                + pwd.second
+                +pwd.first
+                span { +pwd.nums }
+                +pwd.second
             }
         }
     }
 }
 
 fun render(template: () -> String): Mono<ServerResponse>
-    = ok().contentType(TEXT_HTML).body(Mono.just(template()), String::class.java)
+        = ok().contentType(TEXT_HTML).body(Mono.just(template()), String::class.java)
 
 fun getPasswordsStream(): Flux<String> = Flux.generate {
     it.next(PasswordGenerator.generate().toString())
@@ -65,10 +68,16 @@ val routes = router {
     })
 
     path("/api").nest {
-        GET("/password", {
+        GET("/password/stream", {
             ok()
-                .contentType(TEXT_EVENT_STREAM)
-                .body(fromPublisher(getPasswordsStream(), String::class.java))
+                    .contentType(TEXT_EVENT_STREAM)
+                    .body(fromPublisher(getPasswordsStream(), String::class.java))
+        })
+
+        GET("/password/single", {
+            ok()
+                    .contentType(APPLICATION_JSON)
+                    .body(fromObject(PasswordGenerator.generate()))
         })
     }
 

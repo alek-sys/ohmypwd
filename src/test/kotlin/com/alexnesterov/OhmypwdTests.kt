@@ -3,8 +3,7 @@ package com.alexnesterov
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.subject.SubjectSpek
-import org.springframework.http.MediaType.TEXT_EVENT_STREAM
-import org.springframework.http.MediaType.TEXT_HTML
+import org.springframework.http.MediaType.*
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.test.StepVerifier
 
@@ -38,7 +37,7 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
 
     describe("when getting a password via API", {
         it("returns stream of strings", {
-            val result = subject.get().uri("/api/password")
+            val result = subject.get().uri("/api/password/stream")
                     .accept(TEXT_EVENT_STREAM)
                     .exchange()
                     .expectStatus().isOk
@@ -49,6 +48,20 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
                     .expectNextCount(3)
                     .expectNextMatches({ it.matches(Regex(passwordPattern)) })
                     .thenCancel()
+                    .verify()
+        })
+
+        it("returns a single string", {
+            val result = subject.get().uri("/api/password/single")
+                    .accept(APPLICATION_JSON)
+                    .exchange()
+                    .expectStatus().isOk
+                    .expectHeader().contentType(APPLICATION_JSON)
+                    .returnResult(Password::class.java)
+
+            StepVerifier.create(result.responseBody)
+                    .expectNextMatches({ it.toString().matches(Regex(passwordPattern)) })
+                    .expectComplete()
                     .verify()
         })
     })
