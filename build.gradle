@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		kotlinVersion = "1.2.0"
+		kotlinVersion = "1.2.10"
 		springBootVersion = "2.0.0.M7"
 	}
 	repositories {
@@ -57,16 +57,14 @@ dependencies {
 
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 	testCompile("io.projectreactor:reactor-test")
+
 	testCompile("org.jetbrains.spek:spek-subject-extension:1.1.5")
-    testCompile("org.jetbrains.spek:spek-api:1.1.5") {
+	testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+	testCompile ('org.jetbrains.spek:spek-api:1.1.5') {
 		exclude group: 'org.jetbrains.kotlin'
 	}
-
-    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:1.1.5") {
+	testRuntime ('org.jetbrains.spek:spek-junit-platform-engine:1.1.5') {
 		exclude group: 'org.junit.platform'
 		exclude group: 'org.jetbrains.kotlin'
 	}
-
-	testRuntime("org.junit.platform:junit-platform-launcher:1.0.0")
-	testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0")
 }

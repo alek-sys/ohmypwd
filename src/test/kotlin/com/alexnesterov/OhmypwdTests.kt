@@ -14,15 +14,15 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
     val passwordHtmlPattern = "\\w+<span>\\d\\d</span>\\w+"
     val passwordPattern = "^\\w+\\d\\d\\w+$"
 
-    describe("when getting a page by / url", {
-        it("returns 200 response with type text/html", {
+    describe("when getting a page by / url") {
+        it("returns 200 response with type text/html") {
             subject.get().uri("/").accept(TEXT_HTML)
                 .exchange()
                     .expectStatus()
                     .is2xxSuccessful
-        })
+        }
 
-        it("returns html with password", {
+        it("returns html with password") {
             val result = subject.get().uri("/").accept(TEXT_HTML)
                 .exchange()
                 .expectStatus().isOk
@@ -32,11 +32,11 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
                     .expectNextMatches { it.contains(Regex(passwordHtmlPattern)) }
                     .expectComplete()
                     .verify()
-        })
-    })
+        }
+    }
 
-    describe("when getting a password via API", {
-        it("returns stream of strings", {
+    describe("when getting a password via API") {
+        it("returns stream of strings") {
             val result = subject.get().uri("/api/password/stream")
                     .accept(TEXT_EVENT_STREAM)
                     .exchange()
@@ -49,9 +49,9 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
                     .expectNextMatches({ it.matches(Regex(passwordPattern)) })
                     .thenCancel()
                     .verify()
-        })
+        }
 
-        it("returns a single string", {
+        it("returns a single string") {
             val result = subject.get().uri("/api/password/single")
                     .accept(APPLICATION_JSON)
                     .exchange()
@@ -63,6 +63,6 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
                     .expectNextMatches({ it.toString().matches(Regex(passwordPattern)) })
                     .expectComplete()
                     .verify()
-        })
-    })
+        }
+    }
 })
