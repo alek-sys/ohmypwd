@@ -1,7 +1,5 @@
 package com.alexnesterov
 
-import kotlinx.html.*
-import kotlinx.html.stream.appendHTML
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType.*
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
@@ -10,48 +8,11 @@ import org.springframework.web.reactive.function.BodyInserters.fromPublisher
 import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
-import org.springframework.web.reactive.function.server.body
 import org.springframework.web.reactive.function.server.router
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.ipc.netty.NettyContext
 import reactor.ipc.netty.http.server.HttpServer
-import java.time.OffsetDateTime
-import java.util.*
-
-data class Password(val first: String, val nums: String, val second: String) {
-    override fun toString() = "$first$nums$second"
-}
-
-object PasswordGenerator {
-    private val shortWords = ClassPathResource("short").inputStream.bufferedReader().readLines()
-    private val longWords = ClassPathResource("long").inputStream.bufferedReader().readLines()
-    private val random = Random(OffsetDateTime.now().toEpochSecond())
-
-    fun generate() = Password(shortWords.random(), randomNum(2), longWords.random())
-
-    private fun randomNum(total: Int) = (1..total).fold("", { acc, _ -> acc + random.nextInt(9) })
-
-    private fun List<String>.random(): String = this[random.nextInt(this.size)].toLowerCase()
-}
-
-
-fun indexPage(pwd: Password) = buildString {
-    appendHTML().html {
-        head {
-            link("https://fonts.googleapis.com/css?family=Fredericka+the+Great", "stylesheet")
-            link("main.css", "stylesheet")
-            script(src = "https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js")
-            script(src = "main.js")
-        }
-        body {
-            h1 {
-                +pwd.first
-                span { +pwd.nums }
-                +pwd.second
-            }
-        }
-    }
-}
 
 fun render(template: () -> String): Mono<ServerResponse>
         = ok().contentType(TEXT_HTML).body(Mono.just(template()), String::class.java)
@@ -84,9 +45,12 @@ val routes = router {
     resources("/**", ClassPathResource("static/"))
 }
 
-fun main(args: Array<String>) {
+fun startApp(port: Int): NettyContext? {
     val handler = ReactorHttpHandlerAdapter(RouterFunctions.toHttpHandler(routes))
-    HttpServer.create(8080).newHandler(handler).block()
+    return HttpServer.create(port).newHandler(handler).block()
+}
 
+fun main(args: Array<String>) {
+    startApp(8080)
     Thread.currentThread().join()
 }
