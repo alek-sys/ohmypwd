@@ -6,5 +6,5 @@ cd ohmypwd/
 
 sudo TERM=dumb ./gradlew build
 
-cp ./build/libs/ohmypwd.jar ../build/
-cp ./ci/tasks/Dockerfile ../build/
+sudo cp ./build/libs/ohmypwd.jar ../build/
+sudo cp ./ci/tasks/Dockerfile ../build/
