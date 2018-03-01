@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -u -x
+set -e
 
 cd ohmypwd/
 
