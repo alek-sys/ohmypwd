@@ -1,5 +1,6 @@
 package com.alexnesterov
 
+import org.assertj.core.api.Assertions.assertThat
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.subject.SubjectSpek
@@ -23,15 +24,14 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
         }
 
         it("returns html with password") {
-            val result = subject.get().uri("/").accept(TEXT_HTML)
+            val responseBody = subject.get().uri("/").accept(TEXT_HTML)
                 .exchange()
                 .expectStatus().isOk
-                .returnResult(String::class.java)
+                .expectBody(String::class.java)
+                .returnResult()
+                .responseBody
 
-            StepVerifier.create(result.responseBody)
-                    .expectNextMatches { it.contains(Regex(passwordHtmlPattern)) }
-                    .expectComplete()
-                    .verify()
+            assertThat(responseBody).containsPattern(passwordHtmlPattern)
         }
     }
 
