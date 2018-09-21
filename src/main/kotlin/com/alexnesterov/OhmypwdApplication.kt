@@ -22,24 +22,24 @@ fun getPasswordsStream(): Flux<String> = Flux.generate {
 }
 
 val routes = router {
-    GET("/", {
+    GET("/") {
         render {
             indexPage(PasswordGenerator.generate())
         }
-    })
+    }
 
     path("/api").nest {
-        GET("/password/stream", {
+        GET("/password/stream") {
             ok()
                     .contentType(TEXT_EVENT_STREAM)
                     .body(fromPublisher(getPasswordsStream(), String::class.java))
-        })
+        }
 
-        GET("/password/single", {
+        GET("/password/single") {
             ok()
                     .contentType(APPLICATION_JSON)
                     .body(fromObject(PasswordGenerator.generate()))
-        })
+        }
     }
 
     resources("/**", ClassPathResource("static/"))

@@ -41,12 +41,11 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
                     .accept(TEXT_EVENT_STREAM)
                     .exchange()
                     .expectStatus().isOk
-                    .expectHeader().contentType(TEXT_EVENT_STREAM)
                     .returnResult(String::class.java)
 
             StepVerifier.create(result.responseBody)
                     .expectNextCount(3)
-                    .expectNextMatches({ it.matches(Regex(passwordPattern)) })
+                    .expectNextMatches { it.matches(Regex(passwordPattern)) }
                     .thenCancel()
                     .verify()
         }
@@ -60,7 +59,7 @@ object OhmypwdTests: SubjectSpek<WebTestClient>({
                     .returnResult(Password::class.java)
 
             StepVerifier.create(result.responseBody)
-                    .expectNextMatches({ it.toString().matches(Regex(passwordPattern)) })
+                    .expectNextMatches { it.toString().matches(Regex(passwordPattern)) }
                     .expectComplete()
                     .verify()
         }

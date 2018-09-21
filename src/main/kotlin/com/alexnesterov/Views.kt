@@ -67,8 +67,12 @@ fun indexPage(pwd: Password) = buildString {
         head {
             link("https://fonts.googleapis.com/css?family=Fredericka+the+Great", "stylesheet")
             link("main.css", "stylesheet")
-            script(src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js")
-            script(src = "main.js")
+            script {
+                src = "https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"
+            }
+            script {
+                src = "main.js"
+            }
         }
         body {
             container(pwd)

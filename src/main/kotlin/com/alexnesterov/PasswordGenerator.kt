@@ -15,7 +15,7 @@ object PasswordGenerator {
 
     fun generate() = Password(shortWords.random(), randomNum(2), longWords.random())
 
-    private fun randomNum(total: Int) = (1..total).fold("", { acc, _ -> acc + random.nextInt(9) })
+    private fun randomNum(total: Int) = (1..total).fold("") { acc, _ -> acc + random.nextInt(9) }
 
     private fun List<String>.random(): String = this[random.nextInt(this.size)].toLowerCase()
 }

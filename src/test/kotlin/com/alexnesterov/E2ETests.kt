@@ -5,18 +5,18 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
-import java.util.concurrent.ThreadLocalRandom
+import org.springframework.util.SocketUtils
 
 object E2Spec : Spek({
 
-    val port = ThreadLocalRandom.current().nextInt(9000, 9999)
+    val port = SocketUtils.findAvailableTcpPort()
     val app = startApp(port)
     val page = PasswordPage()
     page.init()
 
     describe("main page") {
         on("clicking refresh button") {
-            it("should refresh generate the new password") {
+            it("should generate the new password") {
                 page.navigateTo("http://localhost:$port/")
                 page.clickRefresh()
                 page.assertPasswordChanged()
