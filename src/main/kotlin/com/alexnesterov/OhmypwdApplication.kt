@@ -11,8 +11,8 @@ import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.router
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.ipc.netty.NettyContext
-import reactor.ipc.netty.http.server.HttpServer
+import reactor.netty.DisposableServer
+import reactor.netty.http.server.HttpServer
 
 fun render(template: () -> String): Mono<ServerResponse>
         = ok().contentType(TEXT_HTML).body(Mono.just(template()), String::class.java)
@@ -45,12 +45,12 @@ val routes = router {
     resources("/**", ClassPathResource("static/"))
 }
 
-fun startApp(port: Int): NettyContext? {
+fun startApp(port: Int): DisposableServer {
     val handler = ReactorHttpHandlerAdapter(RouterFunctions.toHttpHandler(routes))
-    return HttpServer.create(port).newHandler(handler).block()
+    return HttpServer.create().port(port).handle(handler).bindNow()
 }
 
-fun main(args: Array<String>) {
+fun main() {
     startApp(8080)
     Thread.currentThread().join()
 }

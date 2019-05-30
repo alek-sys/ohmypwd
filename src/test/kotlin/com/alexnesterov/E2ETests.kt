@@ -26,6 +26,6 @@ object E2Spec : Spek({
 
     afterGroup {
         page.quit()
-        app?.dispose()
+        app.dispose()
     }
 })
